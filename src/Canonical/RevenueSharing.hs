@@ -32,8 +32,8 @@ lovelaces :: Value -> Integer
 lovelaces = getLovelace . fromValue
 
 {-# INLINABLE percentOwed #-}
-percentOwed :: Value -> Integer -> Value
-percentOwed inVal pct = lovelaceValueOf . divide (lovelaces inVal * pct) $ 1000
+percentOwed :: Value -> Integer -> Integer
+percentOwed inVal pct = lovelaces inVal * pct `divide` 1000
 
 mkValidator :: Config -> () -> () -> ScriptContext -> Bool
 mkValidator config _ _ ctx = traceIfFalse "Not all addresses were paid the correct amount" outputValid
@@ -46,7 +46,7 @@ mkValidator config _ _ ctx = traceIfFalse "Not all addresses were paid the corre
 
     paidPercentOwed :: (PubKeyHash, Integer) -> Bool
     paidPercentOwed (addr, pct) =
-      valuePaidTo info addr == percentOwed inValue pct
+      lovelaces (valuePaidTo info addr) >= percentOwed inValue pct
 
     inValue :: Value
     inValue = txOutValue ownInput
