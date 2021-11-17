@@ -11,6 +11,7 @@
 module Canonical.RevenueSharing
   ( revenueSharing
   , Config
+  , percentOwed
   ) where
 
 import Cardano.Api.Shelley (PlutusScript (..), PlutusScriptV1)
@@ -20,10 +21,9 @@ import qualified Data.ByteString.Short as SBS
 import Ledger hiding (singleton)
 import qualified Ledger.Typed.Scripts as Scripts
 import qualified PlutusTx
-import PlutusTx.Ratio
 import PlutusTx.Prelude hiding (Semigroup (..), unless)
 import qualified PlutusTx.AssocMap as A
-import Ledger.Ada
+import Ledger.Ada hiding (divide)
 
 type Config = A.Map PubKeyHash Integer
 
@@ -33,7 +33,7 @@ lovelaces = getLovelace . fromValue
 
 {-# INLINABLE percentOwed #-}
 percentOwed :: Value -> Integer -> Value
-percentOwed inVal pct = lovelaceValueOf . truncate $ (lovelaces inVal * pct) % 1000
+percentOwed inVal pct = lovelaceValueOf . divide (lovelaces inVal * pct) $ 1000
 
 mkValidator :: Config -> () -> () -> ScriptContext -> Bool
 mkValidator config _ _ ctx = traceIfFalse "Not all addresses were paid the correct amount" outputValid
