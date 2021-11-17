@@ -1,5 +1,9 @@
 {-# LANGUAGE DataKinds #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeApplications #-}
 {-# LANGUAGE TypeFamilies #-}
@@ -16,10 +20,9 @@ import qualified Data.ByteString.Short as SBS
 import Ledger hiding (singleton)
 import qualified Ledger.Typed.Scripts as Scripts
 import qualified PlutusTx
--- import PlutusTx.Ratio
+import PlutusTx.Ratio
 import PlutusTx.Prelude hiding (Semigroup (..), unless)
 import qualified PlutusTx.AssocMap as A
--- import Plutus.V1.Ledger.Value
 import Ledger.Ada
 
 type Config = A.Map PubKeyHash Integer
@@ -28,8 +31,30 @@ type Config = A.Map PubKeyHash Integer
 lovelaces :: Value -> Integer
 lovelaces = getLovelace . fromValue
 
+{-# INLINABLE percentOwed #-}
+percentOwed :: Value -> Integer -> Value
+percentOwed inVal pct = lovelaceValueOf . truncate $ (lovelaces inVal * pct) % 1000
+
 mkValidator :: Config -> () -> () -> ScriptContext -> Bool
-mkValidator _config _ _ _ctx = False
+mkValidator config _ _ ctx = traceIfFalse "Not all addresses were paid the correct amount" outputValid
+  where
+    info :: TxInfo
+    info = scriptContextTxInfo ctx
+
+    outputValid :: Bool
+    outputValid = all paidPercentOwed . A.toList $ config
+
+    paidPercentOwed :: (PubKeyHash, Integer) -> Bool
+    paidPercentOwed (addr, pct) =
+      valuePaidTo info addr == percentOwed inValue pct
+
+    inValue :: Value
+    inValue = txOutValue ownInput
+
+    ownInput :: TxOut
+    ownInput = case findOwnInput ctx of
+      Nothing -> traceError "input missing"
+      Just i -> txInInfoResolved i
 
 data RevenueSharing
 instance Scripts.ValidatorTypes RevenueSharing where
