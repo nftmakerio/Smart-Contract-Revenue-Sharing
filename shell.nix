@@ -1,6 +1,6 @@
 let
   packages = import ./.;
-  inherit (packages) pkgs revenue-sharing;
+  inherit (packages) pkgs revenue-sharing cardano-node;
   inherit (revenue-sharing) haskell;
 
 in
@@ -14,6 +14,7 @@ in
       stylish-haskell
       pkgs.niv
       cardano-repo-tool
+      cardano-node.cardano-cli
       pkgs.ghcid
       # HACK: This shouldn't need to be here.
       pkgs.lzma.dev

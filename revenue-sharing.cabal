@@ -35,3 +35,16 @@ library
   ghc-options:
     -fobject-code -fno-ignore-interface-pragmas
     -fno-omit-interface-pragmas -Wno-unused-packages -Werror
+
+executable create-smart-contract
+  import:         lang
+  hs-source-dirs: app
+  main-is:        Main.hs
+  ghc-options:    -threaded -rtsopts -with-rtsopts=-T
+  build-depends:
+    , bytestring
+    , cardano-api
+    , optparse-applicative
+    , plutus-ledger
+    , plutus-tx
+    , revenue-sharing

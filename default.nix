@@ -1,11 +1,7 @@
 let
   packages = import ./nix;
+in {
+  inherit (packages) pkgs revenue-sharing plutus cardano-node;
 
-  inherit (packages) pkgs revenue-sharing;
-  project = revenue-sharing.haskell.project;
-in
-{
-  inherit pkgs revenue-sharing;
-
-  inherit project;
+  inherit (packages.revenue-sharing.haskell) project;
 }

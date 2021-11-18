@@ -1,0 +1,3 @@
+export CARDANO_NODE_SOCKET_PATH="/Users/$USER/Library/Application Support/Daedalus Mainnet/cardano-node.socket"
+export BLOCKCHAIN=--mainnet
+export BLOCKCHAIN_PREFIX=mainnet
