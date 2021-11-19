@@ -35,7 +35,7 @@ optsParser :: Parser RawOpts
 optsParser = OptsA
   <$> (some . option parseToOpt . mconcat $
     [ long "to"
-    , metavar "<addr>:<pct>"
+    , metavar "<public-key-hash>:<pct>"
     , help "Address to send to and the percent to send. Can appear multiple times. Percentages are times 10, e.g. 2.5% would be 25. Percentages must add up to 100% (i.e. 1000)."
     ])
   <*> (strOption . mconcat $
@@ -76,5 +76,3 @@ createSC OptsA{..} = do
   case result of
       Left err -> print $ displayError err
       Right () -> putStrLn $ "wrote validator to file " ++ output
-
-

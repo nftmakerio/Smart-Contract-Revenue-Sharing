@@ -39,7 +39,7 @@ lovelaces = getLovelace . fromValue
 
 {-# INLINABLE percentOwed #-}
 percentOwed :: Value -> Integer -> Integer
-percentOwed inVal pct = lovelaces inVal * pct `divide` 1000
+percentOwed inVal pct = (lovelaces inVal * pct) `divide` 1000
 
 -------------------------------------------------------------------------------
 -- Validator

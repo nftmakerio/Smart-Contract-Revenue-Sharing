@@ -33,7 +33,7 @@ library
     -fobject-code -fno-ignore-interface-pragmas
     -fno-omit-interface-pragmas -Wno-unused-packages -Werror
 
-executable create-smart-contract
+executable create-revenue-split-sc
   import:         lang
   hs-source-dirs: app
   main-is:        Main.hs
