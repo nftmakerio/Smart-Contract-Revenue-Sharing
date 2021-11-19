@@ -1,9 +1,9 @@
 cabal-version: 2.4
 name:          revenue-sharing
-version:       0.1.0.0
-license:
-author:        Richard Wallace
-maintainer:    rwallace@purefn.dev
+version:       1.0.0.0
+license: MIT
+author:        Richard Wallace, Jonathan Fischoff
+maintainer:    jonathan@Canonicalllc.com
 build-type:    Simple
 
 common lang

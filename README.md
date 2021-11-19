@@ -12,6 +12,8 @@ To build, run:
 $ cabal build
 ```
 
+A `shell.nix` is also providing for nix users.
+
 ## Installing the Smart Contract Generator
 
 This library includes an executable to build the smart contracts. To install it to a specific directory run:
@@ -26,14 +28,20 @@ Where `YOUR_INSTALLATION_DIR` is a directory of your choosing.
 
 Every unique revenue split requires a custom smart contract. To compile a smart contract use the provided executable `create-revenue-split-sc`.
 
-Running `create-revenue-split-sc` without any arguments produces the help message:
+Running `create-revenue-split-sc --help` gives:
 
 ```bash
-
-Missing: (--to <public-key-hash>:<pct>) --output FILE
-$ create-revenue-split-sc
 Usage: create-revenue-split-sc (--to <public-key-hash>:<pct>) --output FILE
   Create a smart contract for revenue sharing
+
+Available options:
+  --to <public-key-hash>:<pct>
+                           Address to send to and the percent to send. Can
+                           appear multiple times. Percentages are times 10, e.g.
+                           2.5% would be 25. Percentages must add up to 100%
+                           (i.e. 1000).
+  --output FILE            Where to write the script.
+  -h,--help                Show this help text
 ```
 
 To create a smart contract you must provide several public key hashes and percentages and percentages. The percentages are specified as integers as 10, so 2.5% would be 25.
