@@ -1,105 +1,63 @@
 index-state: 2021-08-14T00:00:00Z
 
-packages: ./.
+packages:
+    ./
+
+flags: -scrypt
+
+package cardano-crypto-praos
+  flags: -external-libsodium-vrf
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/cardano-node
+  tag: 2cbe363874d0261bc62f52185cf23ed492cf4859
+  --sha256: 0j4x9zbx5dkww82sqi086h39p456iq5xr476ylmrnpwcpfb4xai4
+  subdir:
+    cardano-api
+    cardano-cli
+    cardano-client-demo
+    cardano-config
+    cardano-node
+    cardano-node-chairman
+    cardano-submit-api
+    cardano-testnet
+    bench/cardano-topology
+    bench/locli
+    bench/tx-generator
+    plutus-example/plutus-example
+    trace-dispatcher
+    trace-forward
+    trace-resources
+
+package cryptonite
+  -- Using RDRAND instead of /dev/urandom as an entropy source for key
+  -- generation is dubious. Set the flag so we use /dev/urandom by default.
+  flags: -support_rdrand
 
 -- You never, ever, want this.
 write-ghc-environment-files: never
 
 -- Always build tests and benchmarks.
-tests: true
-benchmarks: true
-
--- Plutus revision from 2021/08/16
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/plutus-apps.git
-  subdir:
-    freer-extras
-    playground-common
-    plutus-contract
-    plutus-chain-index
-    plutus-ledger
-    plutus-pab
-    plutus-use-cases
-    quickcheck-dynamic
-  tag: plutus-starter-devcontainer/v1.0.14
-
-
--- The following sections are copied from the 'plutus-apps' repository cabal.project at the revision
--- given above.
--- This is necessary because the  'plutus-apps' libraries depend on a number of other libraries which are
--- not on Hackage, and so need to be pulled in as `source-repository-package`s themselves. Make sure to
--- re-update this section from the template when you do an upgrade.
-
--- We never, ever, want this.
-write-ghc-environment-files: never
-
--- Always build tests and benchmarks.
-tests: true
-benchmarks: true
-
--- The only sensible test display option
-test-show-details: streaming
-
-allow-newer:
-           -- Copied from plutus-core
-           size-based:template-haskell
-           , ouroboros-consensus-byron:formatting
-           , beam-core:aeson
-           , beam-sqlite:aeson
-           , beam-sqlite:dlist
-           , beam-migrate:aeson
-
--- Copied from plutus-core
-constraints:
-  -- big breaking change here, inline-r doens't have an upper bound
-  singletons < 3.0
-  -- bizarre issue: in earlier versions they define their own 'GEq', in newer
-  -- ones they reuse the one from 'some', but there isn't e.g. a proper version
-  -- constraint from dependent-sum-template (which is the library we actually use).
-  , dependent-sum > 0.6.2.0
-
--- These packages appear in our dependency tree and are very slow to build.
--- Empirically, turning off optimization shaves off ~50% build time.
--- It also mildly improves recompilation avoidance.
--- For deve work we don't care about performance so much, so this is okay.
-package cardano-ledger-alonzo
-  optimization: False
-package ouroboros-consensus-shelley
-  optimization: False
-package ouroboros-consensus-cardano
-  optimization: False
-package cardano-api
-  optimization: False
-
--- Copied from plutus-core
-source-repository-package
-  type: git
-  location: https://github.com/Quid2/flat.git
-  tag: ee59880f47ab835dbd73bea0847dab7869fc20d8
-
--- Needs some patches, but upstream seems to be fairly dead (no activity in > 1 year)
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/purescript-bridge.git
-  tag: 6a92d7853ea514be8b70bab5e72077bf5a510596
+tests: false
 
 source-repository-package
   type: git
-  location: https://github.com/input-output-hk/servant-purescript.git
-  tag: a0c7c7e37c95564061247461aef4be505a853538
+  location: https://github.com/input-output-hk/optparse-applicative
+  tag: 7497a29cb998721a9068d5725d49461f2bba0e7a
+  --sha256: 1gvsrg925vynwgqwplgjmp53vj953qyh3wbdf34pw21c8r47w35r
 
--- Copied from plutus-core
 source-repository-package
   type: git
-  location: https://github.com/input-output-hk/cardano-crypto.git
-  tag: 07397f0e50da97eaa0575d93bee7ac4b2b2576ec
+  location: https://github.com/input-output-hk/hedgehog-extras
+  tag: edf6945007177a638fbeb8802397f3a6f4e47c14
+  --sha256: 0wc7qzkc7j4ns2rz562h6qrx2f8xyq7yjcb7zidnj7f6j0pcd0i9
 
--- Copied from plutus-core
 source-repository-package
   type: git
   location: https://github.com/input-output-hk/cardano-base
-  tag: 4ea7e2d927c9a7f78ddc69738409a5827ab66b98
+  tag: 654f5b7c76f7cc57900b4ddc664a82fc3b925fb0
+  --sha256: 0j4x9zbx5dkww82sqi086h39p456iq5xr476ylmrnpwcpfb4xai4
   subdir:
     base-deriving-via
     binary
@@ -112,14 +70,133 @@ source-repository-package
     slotting
     strict-containers
 
--- Copied from plutus-core
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/cardano-crypto
+  tag: f73079303f663e028288f9f4a9e08bcca39a923e
+  --sha256: 1n87i15x54s0cjkh3nsxs4r1x016cdw1fypwmr68936n3xxsjn6q
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/cardano-ledger-specs
+  tag: bf008ce028751cae9fb0b53c3bef20f07c06e333
+  --sha256: 0my3801w1vinc0kf5yh9lxl6saqxgwm6ccg0vvzi104pafcwwcqx
+  subdir:
+    eras/alonzo/impl
+    eras/alonzo/test-suite
+    eras/byron/chain/executable-spec
+    eras/byron/crypto
+    eras/byron/crypto/test
+    eras/byron/ledger/executable-spec
+    eras/byron/ledger/impl
+    eras/byron/ledger/impl/test
+    eras/shelley/impl
+    eras/shelley/test-suite
+    eras/shelley-ma/impl
+    eras/shelley-ma/test-suite
+    libs/cardano-ledger-core
+    libs/cardano-ledger-pretty
+    libs/cardano-protocol-tpraos
+    libs/small-steps
+    libs/small-steps-test
+    libs/non-integral
+    eras/shelley/chain-and-ledger/executable-spec
+    eras/shelley/chain-and-ledger/shelley-spec-ledger-test
+    eras/shelley/chain-and-ledger/dependencies/non-integer
+
 source-repository-package
   type: git
   location: https://github.com/input-output-hk/cardano-prelude
-  tag: fd773f7a58412131512b9f694ab95653ac430852
+  tag: bb4ed71ba8e587f672d06edf9d2e376f4b055555
+  --sha256: 00h10l5mmiza9819p9v5q5749nb9pzgi20vpzpy1d34zmh6gf1cj
   subdir:
     cardano-prelude
     cardano-prelude-test
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/goblins
+  tag: cde90a2b27f79187ca8310b6549331e59595e7ba
+  --sha256: 17c88rbva3iw82yg9srlxjv2ia5wjb9cyqw44hik565f5v9svnyg
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/iohk-monitoring-framework
+  tag: 808724ff8a19a33d0ed06f9ef59fbd900b08553c
+  --sha256: 0298dpl29gxzs9as9ha6y0w18hqwc00ipa3hzkxv7nlfrjjz8hmz
+  subdir:
+    contra-tracer
+    iohk-monitoring
+    plugins/backend-aggregation
+    plugins/backend-ekg
+    plugins/backend-monitoring
+    plugins/backend-trace-forwarder
+    plugins/scribe-systemd
+    tracer-transformers
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/Win32-network
+  tag: 3825d3abf75f83f406c1f7161883c438dac7277d
+  --sha256: 19wahfv726fa3mqajpqdqhnl9ica3xmf68i254q45iyjcpj1psqx
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/ouroboros-network
+  tag: 94782e5ca52f234ff8eeddc6322a46cca0b69c0e
+  --sha256: 1da3pka4pn6sjf6w19d957aryjc9ip1a3g0vz7jz66pjri3v2n0j
+  subdir:
+    io-sim
+    io-classes
+    monoidal-synchronisation
+    network-mux
+    ouroboros-consensus
+    ouroboros-consensus-byron
+    ouroboros-consensus-cardano
+    ouroboros-consensus-shelley
+    ouroboros-network
+    ouroboros-network-framework
+    ouroboros-network-testing
+    typed-protocols
+    typed-protocols-cborg
+    typed-protocols-examples
+    ntp-client
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/plutus
+  tag: d400da487208437998d90a8c2352f6f2315a58ef
+  --sha256: 1jicyk4hr8p0xksj4048gdxndrb42jz4wsnkhc3ymxbm5v6snalf
+  subdir:
+    plutus-core
+    plutus-ledger-api
+    plutus-tx
+    plutus-tx-plugin
+    prettyprinter-configurable
+    stubs/plutus-ghc-stub
+    word-array
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/plutus-apps
+  tag: ac3f39e1c4384ce44fdb8c321985ac447e85e411
+  --sha256: 1jicyk4hr8p0xksj4048gdxndrb42jz4wsnkhc3ymxbm5v6snalf
+  subdir:
+    freer-extras
+    plutus-ledger
+
+source-repository-package
+  type: git
+  location: https://github.com/input-output-hk/cardano-wallet
+  tag: d9563439e99d393380849f4586f7e2c9ab1e3561
+  subdir:
+    lib/core/
+    lib/cli/
+    lib/launcher/
+    lib/numeric/
+    lib/text-class/
+    lib/test-utils/
+    lib/strict-non-empty-containers/
 
 source-repository-package
   type: git
@@ -127,123 +204,43 @@ source-repository-package
   tag: d2f86caa085402a953920c6714a0de6a50b655ec
   subdir:
     core
+    command-line
 
 source-repository-package
   type: git
-  location: https://github.com/input-output-hk/cardano-wallet
-  tag: ae7569293e94241ef6829139ec02bd91abd069df
-  subdir:
-    lib/text-class
-    lib/strict-non-empty-containers
-    lib/core
-    lib/test-utils
-    lib/numeric
+  location: https://github.com/input-output-hk/ekg-forward
+  tag: d9e8fd302fa6ba41c07183d371e6777286d37bc2
+  --sha256: 0s8cblhq3i528jj7r7yd4v82nqzafj8vrgf0y80l7saxc3a5f2lk
 
+-- Drops an instance breaking our code. Should be released to Hackage eventually.
 source-repository-package
   type: git
-  location: https://github.com/input-output-hk/ouroboros-network
-  tag: 1f4973f36f689d6da75b5d351fb124d66ef1057d
-  subdir:
-    monoidal-synchronisation
-    typed-protocols
-    typed-protocols-cborg
-    typed-protocols-examples
-    ouroboros-network
-    ouroboros-network-testing
-    ouroboros-network-framework
-    ouroboros-consensus
-    ouroboros-consensus-byron
-    ouroboros-consensus-cardano
-    ouroboros-consensus-shelley
-    io-sim
-    io-classes
-    network-mux
-    ntp-client
+  location: https://github.com/input-output-hk/flat
+  tag: ee59880f47ab835dbd73bea0847dab7869fc20d8
+  --sha256: 1lrzknw765pz2j97nvv9ip3l1mcpf2zr4n56hwlz0rk7wq7ls4cm
 
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/iohk-monitoring-framework
-  -- Important Note: Read below, before changing this!
-  tag: 46f994e216a1f8b36fe4669b47b2a7011b0e153c
-  -- Are you thinking of updating this tag to some other commit?  Please
-  -- ensure that the commit you are about to use is the latest one from
-  -- the *develop* branch of this repo:
-  --   * <https://github.com/input-output-hk/iohk-monitoring-framework/commits/develop>
-  -- (not master!)
-  --
-  -- In particular we rely on the code from this PR:
-  --  * <https://github.com/input-output-hk/iohk-monitoring-framework/pull/622>
-  -- being merged.
-  subdir:
-    iohk-monitoring
-    tracer-transformers
-    contra-tracer
-    plugins/backend-aggregation
-    plugins/backend-ekg
-    plugins/backend-monitoring
-    plugins/backend-trace-forwarder
-    plugins/scribe-systemd
+constraints:
+    hedgehog >= 1.0
+  , bimap >= 0.4.0
+  , libsystemd-journal >= 1.4.4
+  , systemd >= 2.3.0
+    -- systemd-2.3.0 requires at least network 3.1.1.0 but it doesn't declare
+    -- that dependency
+  , network >= 3.1.1.0
 
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/cardano-ledger-specs
-  tag: bf008ce028751cae9fb0b53c3bef20f07c06e333
-  subdir:
-    byron/ledger/impl
-    cardano-ledger-core
-    cardano-protocol-tpraos
-    eras/alonzo/impl
-    eras/byron/chain/executable-spec
-    eras/byron/crypto
-    eras/byron/crypto/test
-    eras/byron/ledger/executable-spec
-    eras/byron/ledger/impl/test
-    eras/shelley/impl
-    eras/shelley-ma/impl
-    libs/non-integral
-    libs/small-steps
-    semantics/small-steps-test
+package comonad
+  flags: -test-doctests
 
--- A lot of plutus-apps dependencies have to be synchronized with the dependencies of
--- cardano-node. If you update cardano-node, please make sure that all dependencies
--- of cardano-node are also updated.
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/cardano-node.git
-  tag: b6ca519f97a0e795611a63174687e6bb70c9f752
-  subdir:
-    cardano-api
-    cardano-node
-    cardano-cli
-    cardano-config
+package cardano-ledger-alonzo-test
+  tests: False
 
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/optparse-applicative
-  tag: 7497a29cb998721a9068d5725d49461f2bba0e7a
+package cardano-wallet-core
+  tests: False
+  flags: -scrypt
 
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/Win32-network
-  tag: 3825d3abf75f83f406c1f7161883c438dac7277d
+package plutus-ledger
+  tests: False
+  flags: -scrypt
 
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/goblins
-  tag: cde90a2b27f79187ca8310b6549331e59595e7ba
-
--- A lot of plutus-apps dependencies have to be syncronized with the dependencies of
--- plutus. If you update plutus, please make sure that all dependencies of plutus
--- are also updated
-source-repository-package
-  type: git
-  location: https://github.com/input-output-hk/plutus
-  tag: 3f089ccf0ca746b399c99afe51e063b0640af547
-  subdir:
-    plutus-core
-    plutus-ledger-api
-    plutus-tx
-    plutus-tx-plugin
-    word-array
-    prettyprinter-configurable
-    stubs/plutus-ghc-stub
+allow-newer:
+  size-based:template-haskell

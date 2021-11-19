@@ -1,6 +1,15 @@
+# Revenue Split Smart Contract
+
+This smart contract validates Ada is split correctly between multiple address.
+
+During compliation, a list of address and percentage pairs are passed in. When validating the disembursement transaction, the smart contractor ensures each address receives the correct percentage that was locked at the script address.
+
+## Testing
+
 Here's how to use these scripts:
 
-# General
+
+## General
 
 When in a shell, before running anything below, source the env vars for file for either mainnet or testnet, depending on which you're testing on.
 
@@ -16,7 +25,7 @@ For mainnet
 $ source mainnet-env.envvars
 ```
 
-# Init (only done once)
+## Init (only done once)
 
 First create the wallets, get the protocol parameters, compile the plutus, and create the script address
 
@@ -27,7 +36,7 @@ $ ./scripts/compile.sh
 $ ./scripts/hash-script.sh
 ```
 
-# Make sure the `sender` has funds
+## Make sure the `sender` has funds
 
 If you just created the wallets, find the sender address (it will be different then the example value below).
 
@@ -54,9 +63,9 @@ If you don't see any transactions, wait a bit longer and try again.
 
 Once we have wallets and the sender has funds, we're ready for testing.
 
-# Test happy path
+## Test happy path
 
-## Locking transaction
+### Locking transaction
 
 First, we need to create the locking transaction. Before we can do that, we need to find a utxo, for the sender, that we can use.
 We do that by running the `./scripts/query/sender.sh` script.
@@ -88,7 +97,7 @@ $ ./scripts/query/sc.sh
 cd9a08c297353218b532bf110091ebaa4623d4775af6819029340911068a6b0a     1        1724100 lovelace + TxOutDatumHash ScriptDataInAlonzoEra "5e9d8bac576e8604e7c3526025bc146f5fa178173e3a5592d122687bd785b520"
 ```
 
-## Unlocking transaction
+### Unlocking transaction
 
 For creating the transaction to share the ada sent we need two utxos: the first is the script utxo, as found at the end of the previous section (`cd9a08c297353218b532bf110091ebaa4623d4775af6819029340911068a6b0a#1`).
 

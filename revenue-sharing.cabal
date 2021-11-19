@@ -22,9 +22,6 @@ library
     , bytestring
     , cardano-api
     , containers
-    , freer-extras
-    , playground-common
-    , plutus-contract
     , plutus-ledger
     , plutus-ledger-api
     , plutus-tx
