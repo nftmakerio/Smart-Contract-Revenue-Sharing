@@ -32,11 +32,13 @@ echo
 cardano-cli transaction build \
     --alonzo-era \
     $BLOCKCHAIN \
-    --tx-in $utxoScript \
+    --tx-in $scriptUtxo\
     --tx-in-script-file $validatorFile \
+    --tx-in-datum-value 12 \
+    --tx-in-redeemer-value 0 \
     --tx-in $collateralUtxo \
-    --tx-in-collateral $collateralUtxo \
     --required-signer $signingKey \
+    --tx-in-collateral $collateralUtxo \
     --tx-out "$fiftyAddr + $fiftyAmount lovelace" \
     --tx-out "$thirtythreethreeAddr + $thirtythreethreeAmount lovelace" \
     --tx-out "$sixteensevenAddr + $sixteensevenAmount lovelace" \

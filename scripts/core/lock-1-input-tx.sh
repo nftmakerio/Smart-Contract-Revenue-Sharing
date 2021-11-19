@@ -7,7 +7,7 @@ baseDir="scripts"
 #   wallet address file
 #   signing key file
 
-$baseDir/hash-revenue-sharing.sh
+$baseDir/hash-script.sh
 
 bodyFile=temp/lock-tx-body.01
 outFile=temp/lock-tx.01
@@ -18,6 +18,7 @@ utxo="$1"
 walletAddr="$2"
 signingKey="$3"
 value="$4"
+datumHash="$(cardano-cli transaction hash-script-data --script-data-value 12)"
 
 echo "bodyFile: $bodyFile"
 echo "outFile: $outFile"
@@ -29,11 +30,13 @@ echo "signing key file: $signingKey"
 echo "value: $value"
 echo
 
+
 cardano-cli transaction build \
     --alonzo-era \
     $BLOCKCHAIN \
     --tx-in $utxo \
     --tx-out "$scriptHash + $value" \
+    --tx-out-datum-hash "$datumHash" \
     --change-address $walletAddr \
     --protocol-params-file scripts/$BLOCKCHAIN_PREFIX/protocol-parameters.json \
     --out-file $bodyFile

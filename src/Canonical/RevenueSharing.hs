@@ -35,7 +35,7 @@ lovelaces = getLovelace . fromValue
 percentOwed :: Value -> Integer -> Integer
 percentOwed inVal pct = lovelaces inVal * pct `divide` 1000
 
-mkValidator :: Config -> () -> () -> ScriptContext -> Bool
+mkValidator :: Config -> Integer -> Integer -> ScriptContext -> Bool
 mkValidator config _ _ ctx = traceIfFalse "Not all addresses were paid the correct amount" outputValid
   where
     info :: TxInfo
@@ -58,8 +58,8 @@ mkValidator config _ _ ctx = traceIfFalse "Not all addresses were paid the corre
 
 data RevenueSharing
 instance Scripts.ValidatorTypes RevenueSharing where
-    type instance DatumType RevenueSharing = ()
-    type instance RedeemerType RevenueSharing = ()
+    type instance DatumType RevenueSharing = Integer
+    type instance RedeemerType RevenueSharing = Integer
 
 typedValidator :: Config -> Scripts.TypedValidator RevenueSharing
 typedValidator config = Scripts.mkTypedValidator @RevenueSharing
@@ -67,7 +67,7 @@ typedValidator config = Scripts.mkTypedValidator @RevenueSharing
       PlutusTx.liftCode config)
     $$(PlutusTx.compile [|| wrap ||])
   where
-    wrap = Scripts.wrapValidator @() @()
+    wrap = Scripts.wrapValidator @Integer @Integer
 
 validator :: Config -> Validator
 validator = Scripts.validatorScript . typedValidator

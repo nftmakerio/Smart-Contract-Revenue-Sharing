@@ -72,9 +72,6 @@ checkOpts OptsA{..} = do
 
 createSC :: Opts -> IO ()
 createSC OptsA{..} = do
-  print sendTo
-  print output
-
   result <- writeFileTextEnvelope output Nothing . revenueSharing $ sendTo
   case result of
       Left err -> print $ displayError err

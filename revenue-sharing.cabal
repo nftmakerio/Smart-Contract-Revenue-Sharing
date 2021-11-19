@@ -42,7 +42,6 @@ executable create-smart-contract
   main-is:        Main.hs
   ghc-options:    -threaded -rtsopts -with-rtsopts=-T
   build-depends:
-    , bytestring
     , cardano-api
     , optparse-applicative
     , plutus-ledger
