@@ -1,8 +1,8 @@
 # Revenue Split Smart Contract
 
-This smart contract validates Ada is split correctly between multiple address.
+This smart contract validates Ada is split correctly between multiple addresses.
 
-During compliation, a list of address and percentage pairs are passed in. When validating the disembursement transaction, the smart contractor ensures each address receives the correct percentage that was locked at the script address.
+During compilation, a list of address and percentage pairs are passed in. When validating the disbursement transaction, the smart contractor ensures each address receives the correct percentage that was locked at the script address.
 
 ## Building
 
@@ -16,7 +16,7 @@ A `shell.nix` is also providing for nix users.
 
 ## Installing the Smart Contract Generator
 
-This library includes an executable to build the smart contracts. To install it to a specific directory run:
+This library includes an executable to build the smart contracts. To install it to a specific directory, run:
 
 ```
 $ cabal install exe:create-revenue-split-sc --install-method=copy --installdir=YOUR_INSTALLATION_DIR
@@ -26,7 +26,7 @@ Where `YOUR_INSTALLATION_DIR` is a directory of your choosing.
 
 ## Compiling the Smart Contracts
 
-Every unique revenue split requires a custom smart contract. To compile a smart contract use the provided executable `create-revenue-split-sc`.
+Every unique revenue split requires a custom smart contract. To compile a smart contract, use the provided executable `create-revenue-split-sc`.
 
 Running `create-revenue-split-sc --help` gives:
 
@@ -44,9 +44,9 @@ Available options:
   -h,--help                Show this help text
 ```
 
-To create a smart contract you must provide several public key hashes and percentages and percentages. The percentages are specified as integers as 10, so 2.5% would be 25.
+To create a smart contract, you must provide several public key hashes and percentages and percentages. The percentages are specified as integers as 10, so 2.5% would be 25.
 
-For example the following splits revenue between three parties, where the first receives 50% the second 45% and the third receives 5%:
+For example, the following splits revenue between three parties, where the first receives 50% the second 45% and the third receives 5%:
 
 ```bash
 $ create-revenue-split-sc \
@@ -84,7 +84,7 @@ cardano-cli transaction build \
     --out-file locking-tx-body.txt
 ```
 
-A couple things to point out. First we are sending Ada to the address we created earlier, e.g. `revenue-split.addr`. Next we included a required datum hash. The datum is ignored by the script, so the exact value we are hashing does not matter. However, it must be a valid hash, and the datum needs to be passed into the unlocking transaction.
+A couple of things to point out. First, we are sending Ada to the address we created earlier, e.g. `revenue-split.addr`. Next, we included a required datum hash. The datum is ignored by the script, so the exact value we are hashing does not matter. However, it must be a valid hash, and the datum needs to be passed into the unlocking transaction.
 
 Here is an example of unlocking transaction corresponding to above locking transaction:
 
@@ -107,9 +107,9 @@ cardano-cli transaction build \
     --out-file unlocking-tx-body.txt
 ```
 
-A few things to note. We are passing in the same datum we hashed for the locking transaction, e.g. `--tx-in-datum-value 12`. Another thing to note, we have an extra input UTxO to cover the transaction costs. Additionally we are passing in a redeemer of `0`. This is arbitrary, any integer would work here.
+A few things to note. We are passing in the same datum we hashed for the locking transaction, e.g. `--tx-in-datum-value 12`. Another thing to note, we have an extra input UTxO to cover the transaction costs. Additionally, we are passing in a redeemer of `0`. This is arbitrary, any integer would work here.
 
-Similar example transactions can be found in the `scripts` folder which is used for testing, as described below.
+Similar example transactions can be found in the `scripts` folder, which is used for testing, as described below.
 
 ## Testing
 
@@ -152,9 +152,9 @@ $ cat ~/$BLOCKCHAIN_PREFIX/sender.addr
 addr_test1vz2wnmjhkvg6t59uh8q39svqq4cms6vdyha802apqwvstuq80a88a
 ```
 
-If you're testing on the mainnet, you'll need to send some ada to that address from your wallet (or have someone else send it).
+If you're testing on the mainnet, you'll need to send some Ada to that address from your wallet (or have someone else send it).
 
-If you're testing on the testnet, you can go to the faucet <https://testnets.cardano.org/en/testnets/cardano/tools/faucet/> and send ada to that address.
+If you're testing on the testnet, you can go to the faucet <https://testnets.cardano.org/en/testnets/cardano/tools/faucet/> and send Ada to that address.
 
 Wait a bit and check that the funds are available
 
@@ -206,7 +206,7 @@ cd9a08c297353218b532bf110091ebaa4623d4775af6819029340911068a6b0a     1        17
 
 ### Unlocking transaction
 
-For creating the transaction to share the ada sent we need two UTxOs: the first is the script UTxO, as found at the end of the previous section (`cd9a08c297353218b532bf110091ebaa4623d4775af6819029340911068a6b0a#1`).
+For creating the transaction to share the ada sent, we need two UTxOs: the first is the script UTxO, as found at the end of the previous section (`cd9a08c297353218b532bf110091ebaa4623d4775af6819029340911068a6b0a#1`).
 
 The second is a UTxO to cover fees and collateral. We use the same UTxO for both. Find a UTxO to use from the sender
 
@@ -258,7 +258,7 @@ $ ./scripts/query/sender.sh
 cd9a08c297353218b532bf110091ebaa4623d4775af6819029340911068a6b0a     0        998110179 lovelace + TxOutDatumHashNone
 ```
 
-Next find the UTxO for the funds at the script address:
+Next, find the UTxO for the funds at the script address:
 
 ```
 $ ./scripts/query/sc.sh
