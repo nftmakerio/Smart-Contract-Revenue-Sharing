@@ -41,6 +41,18 @@ lovelaces = getLovelace . fromValue
 percentOwed :: Value -> Integer -> Integer
 percentOwed inVal pct = (lovelaces inVal * pct) `divide` 1000
 
+{-# INLINABLE ensureOnlyOneScriptInput #-}
+ensureOnlyOneScriptInput :: ScriptContext -> Bool
+ensureOnlyOneScriptInput ctx =
+  let
+    isScriptInput :: TxInInfo -> Bool
+    isScriptInput i = case (txOutDatumHash . txInInfoResolved) i of
+      Nothing -> False
+      Just _ -> True
+  in if length (filter isScriptInput $ txInfoInputs (scriptContextTxInfo ctx)) <= 1
+       then True
+       else False
+
 -------------------------------------------------------------------------------
 -- Validator
 -------------------------------------------------------------------------------
@@ -50,7 +62,9 @@ percentOwed inVal pct = (lovelaces inVal * pct) `divide` 1000
   in the 'Config'
 -}
 mkValidator :: Config -> Integer -> Integer -> ScriptContext -> Bool
-mkValidator config _ _ ctx = traceIfFalse "Not all addresses were paid the correct amount" outputValid
+mkValidator config _ _ ctx =
+  traceIfFalse "Only one script input allowed" (ensureOnlyOneScriptInput ctx)
+    && traceIfFalse "Not all addresses were paid the correct amount" outputValid
   where
     info :: TxInfo
     info = scriptContextTxInfo ctx
