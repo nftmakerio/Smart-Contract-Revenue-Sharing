@@ -120,6 +120,7 @@ Here's how to use these scripts:
 
 When in a shell, before running anything below, source the env vars for file for either mainnet or testnet, depending on which you're testing on.
 
+
 For testnet
 
 ```
@@ -131,6 +132,8 @@ For mainnet
 ```
 $ source scripts/envars/mainnet-env.envvars
 ```
+
+The environment variable files set `CARDANO_NODE_SOCKET_PATH` to the path of the appropriate Daedalus socket file (either Testnet Daedalus or the regular mainnet Daedalus). It you run a `cardano-node` on your own you should set this environment variable to your socket file location after sourcing the environment variable file.
 
 ## Init (only done once)
 
