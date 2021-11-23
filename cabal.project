@@ -12,7 +12,7 @@ source-repository-package
   type: git
   location: https://github.com/input-output-hk/cardano-node
   tag: 2cbe363874d0261bc62f52185cf23ed492cf4859
-  --sha256: 0j4x9zbx5dkww82sqi086h39p456iq5xr476ylmrnpwcpfb4xai4
+  --sha256: 0x5j0cynlc9kiyj9w7casax477z3fb74pfsyfl373dn7rv1grg4d
   subdir:
     cardano-api
     cardano-cli
@@ -166,7 +166,7 @@ source-repository-package
   type: git
   location: https://github.com/input-output-hk/plutus
   tag: d400da487208437998d90a8c2352f6f2315a58ef
-  --sha256: 1jicyk4hr8p0xksj4048gdxndrb42jz4wsnkhc3ymxbm5v6snalf
+  --sha256: 00fp9y614gx7hak7b3wkhpr4z7n5nffdczz8ix4wwfrlx8ykigmq
   subdir:
     plutus-core
     plutus-ledger-api
@@ -180,7 +180,7 @@ source-repository-package
   type: git
   location: https://github.com/input-output-hk/plutus-apps
   tag: ac3f39e1c4384ce44fdb8c321985ac447e85e411
-  --sha256: 1jicyk4hr8p0xksj4048gdxndrb42jz4wsnkhc3ymxbm5v6snalf
+  --sha256: 1nwa5w6h8pcyanfgjrprk5s6wz5xkp5lraliy8306gslpib3hs6n
   subdir:
     freer-extras
     plutus-ledger

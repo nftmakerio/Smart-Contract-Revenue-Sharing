@@ -2,7 +2,7 @@
 
 This smart contract validates Ada is split correctly between multiple addresses.
 
-During compilation, a list of address and percentage pairs are passed in. When validating the disbursement transaction, the smart contractor ensures each address receives the correct percentage that was locked at the script address.
+During compilation, a list of address and percentage pairs are passed in. When validating the disbursement transaction, the smart contract ensures each address receives the correct percentage that was locked at the script address.
 
 ## Building
 
@@ -12,7 +12,7 @@ To build, run:
 $ cabal build
 ```
 
-A `shell.nix` is also providing for nix users.
+A `shell.nix` is also provided for nix users.
 
 ## Installing the Smart Contract Generator
 
@@ -44,7 +44,7 @@ Available options:
   -h,--help                Show this help text
 ```
 
-To create a smart contract, you must provide several public key hashes and percentages and percentages. The percentages are specified as integers as 10, so 2.5% would be 25.
+To create a smart contract, you must provide several public key hashes and percentages. The percentages are specified as integers as 10, so 2.5% would be 25.
 
 For example, the following splits revenue between three parties, where the first receives 50% the second 45% and the third receives 5%:
 
